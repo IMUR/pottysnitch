@@ -1,0 +1,103 @@
+{
+  "rules": {
+    "map-container": {
+      "description": "MapLibre container requirements",
+      "rules": [
+        "Container must have explicit height/width",
+        "All parent elements need height definitions",
+        "Avoid display:contents on map parent elements",
+        "Include maplibre-gl.css in app.html"
+      ]
+    },
+    "runes": {
+      "state-management": {
+        "prefer": [
+          "$state<Type>(initialValue)",
+          "$derived(() => computation)",
+          "$effect(() => sideEffect)"
+        ],
+        "avoid": [
+          "let without $state",
+          "writable stores for component state",
+          "manual subscription management"
+        ]
+      },
+      "props": {
+        "syntax": "let { propName } = $props<PropType>();",
+        "validation": "Use TypeScript interfaces for prop types"
+      },
+      "events": {
+        "syntax": "let { dispatch } = $createEventDispatcher<EventType>();"
+      }
+    },
+    "typescript": {
+      "required": [
+        "Explicit types for all state variables",
+        "Interface definitions for props",
+        "Type assertions for maplibre-gl objects",
+        "Event type definitions"
+      ],
+      "naming": {
+        "interfaces": "IMapState, ILocationData",
+        "types": "MapConfig, LocationCoords",
+        "events": "MapEventDetail, LocationUpdateEvent"
+      }
+    },
+    "data-handling": {
+      "geolocation": {
+        "pattern": "async/await with proper error types",
+        "storage": "$state with LngLatLike type"
+      },
+      "map-state": {
+        "initialization": "Defer until container mounted",
+        "cleanup": "Use $effect cleanup return"
+      }
+    },
+    "component-structure": {
+      "order": [
+        "Imports",
+        "TypeScript interfaces",
+        "State declarations",
+        "Derived values",
+        "Methods",
+        "Effects",
+        "Template"
+      ],
+      "file-naming": "PascalCase.svelte"
+    },
+    "error-patterns": {
+      "geolocation": "Use typed error messages object",
+      "map-loading": "Show loading/error states",
+      "type-guards": "Use instanceof for Error types"
+    },
+    "optimization": {
+      "map-instance": "Single instance, cleanup on destroy",
+      "derived-values": "Minimize computations in $derived",
+      "effect-dependencies": "Explicit dependency tracking"
+    },
+    "comments": {
+      "required": [
+        "Component purpose",
+        "Prop interfaces",
+        "Complex state relationships",
+        "Effect dependencies"
+      ],
+      "format": "JSDoc style with @param and @returns"
+    }
+  },
+
+  "conventions": {
+    "state-management": "Use runes over stores when possible",
+    "typing": "Prefer interfaces over type aliases for objects",
+    "async": "Always handle loading and error states",
+    "cleanup": "Implement cleanup in $effect returns",
+    "css": "Use Tailwind classes with global styles only when necessary"
+  },
+
+  "warnings": {
+    "map-rendering": "Check container height hierarchy",
+    "runes-lifecycle": "Effects run after DOM updates",
+    "typescript-strictness": "Enable strict mode and null checks",
+    "prop-typing": "Always type $props generic"
+  }
+} 
