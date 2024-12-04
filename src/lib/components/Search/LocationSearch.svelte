@@ -28,7 +28,7 @@
         error = null;
         
         try {
-            $inspect('Fetching suggestions for:', searchInput);
+            console.log('Fetching suggestions for:', searchInput);
             const response = await fetch(
                 `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(searchInput)}&format=json&apiKey=${import.meta.env.PUBLIC_GEOAPIFY_API_KEY}`
             );
@@ -36,7 +36,7 @@
             if (!response.ok) throw new Error('Search failed');
             
             const data = await response.json();
-            $inspect('Search results:', data);
+            console.log('Search results:', data);
             
             if (data.features) {
                 results = data.features;

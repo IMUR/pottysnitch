@@ -44,7 +44,7 @@
 		try {
 			console.log('Initializing map...');
 			await getUserLocation();
-			$inspect(userLocation);
+			console.log('User location:', userLocation);
 
 			const mapInstance = new maplibregl.Map({
 				container,
@@ -53,12 +53,12 @@
 				zoom: 9
 			});
 
-			$inspect('Map instance created');
+			console.log('Map instance created');
 			
 			map = mapInstance;
 			
 			mapInstance.on('load', () => {
-				$inspect('Map loaded');
+				console.log('Map loaded');
 				isLoading = false;
 			});
 		} catch (err) {
@@ -70,9 +70,11 @@
 
 	$effect(() => {
 		if (!container) return;
+		console.log('Container mounted, initializing map...');
 		initMap();
 		
 		return () => {
+			console.log('Cleaning up map...');
 			map?.remove();
 		};
 	});
