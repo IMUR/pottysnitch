@@ -44,7 +44,7 @@
 		try {
 			console.log('Initializing map...');
 			await getUserLocation();
-			console.log('User location:', userLocation);
+			console.log('User location:', $state.snapshot(userLocation));
 
 			const mapInstance = new maplibregl.Map({
 				container,
@@ -75,6 +75,7 @@
 		
 		return () => {
 			console.log('Cleaning up map...');
+			if (map) console.log('Map state before cleanup:', $state.snapshot(map));
 			map?.remove();
 		};
 	});

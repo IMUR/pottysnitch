@@ -28,7 +28,7 @@
         error = null;
         
         try {
-            console.log('Fetching suggestions for:', searchInput);
+            console.log('Fetching suggestions for:', $state.snapshot(searchInput));
             const response = await fetch(
                 `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(searchInput)}&format=json&apiKey=${import.meta.env.PUBLIC_GEOAPIFY_API_KEY}`
             );
@@ -40,6 +40,7 @@
             
             if (data.features) {
                 results = data.features;
+                console.log('Updated results:', $state.snapshot(results));
             } else {
                 results = [];
             }
