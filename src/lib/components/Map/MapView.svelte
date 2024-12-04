@@ -42,66 +42,43 @@
 
 	async function initMap() {
 		try {
+			console.log('Initializing map...');
 			await getUserLocation();
+			$inspect(userLocation);
 
 			const mapInstance = new maplibregl.Map({
 				container,
-				style: {
-					version: 8,
-					sources: {
-						osm: {
-							type: 'raster',
-							tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-							tileSize: 256,
-							attribution: '© OpenStreetMap contributors'
-						}
-					},
-					layers: [{
-						id: 'osm',
-						type: 'raster',
-						source: 'osm',
-						minzoom: 0,
-						maxzoom: 19
-					}]
-				},
-				center: userLocation ?? [0, 0],
-				zoom: 15,
-				minZoom: 3,
-				maxZoom: 19,
-				pitch: 0,
-				attributionControl: false
+				style: `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.PUBLIC_MAPTILER_KEY}`,
+				center: userLocation || [-74.5, 40],
+				zoom: 9
 			});
 
-			mapInstance.addControl(new maplibregl.AttributionControl(), 'bottom-right');
-			mapInstance.addControl(new maplibregl.NavigationControl(), 'top-right');
-
+			$inspect('Map instance created');
+			
+			map = mapInstance;
+			
 			mapInstance.on('load', () => {
-				if (userLocation) {
-					new maplibregl.Marker()
-						.setLngLat(userLocation)
-						.addTo(mapInstance);
-				}
-				map = mapInstance;
+				$inspect('Map loaded');
 				isLoading = false;
 			});
 		} catch (err) {
+			console.error('Map initialization error:', err);
 			error = err instanceof Error ? err : new Error('Map initialization failed');
 			isLoading = false;
 		}
 	}
 
 	$effect(() => {
-		console.log('Container:', container);
 		if (!container) return;
 		initMap();
+		
 		return () => {
-			console.log('Cleaning up map');
 			map?.remove();
 		};
 	});
 </script>
 
-<div class="relative h-screen w-full" bind:this={container}>
+<div class="relative w-full h-[calc(100vh-4rem)]" bind:this={container}>
 	{#if error}
 		<div class="absolute inset-0 flex items-center justify-center bg-gray-50">
 			<p class="text-red-600">{error.message}</p>

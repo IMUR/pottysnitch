@@ -15,26 +15,37 @@
     let isLoading = $state(false);
     let error = $state<string | null>(null);
 
-    let debouncedSearch = $derived(async () => {
-        if (searchInput.length < 3) return;
-        await handleSearch();
-    });
-
-    async function handleSearch() {
+    async function handleInput(e: Event) {
+        const target = e.target as HTMLInputElement;
+        searchInput = target.value;
+        
+        if (searchInput.length < 3) {
+            results = [];
+            return;
+        }
+        
         isLoading = true;
         error = null;
         
         try {
+            $inspect('Fetching suggestions for:', searchInput);
             const response = await fetch(
-                `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(searchInput)}&apiKey=${import.meta.env.PUBLIC_GEOAPIFY_API_KEY}`
+                `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(searchInput)}&format=json&apiKey=${import.meta.env.PUBLIC_GEOAPIFY_API_KEY}`
             );
             
             if (!response.ok) throw new Error('Search failed');
             
             const data = await response.json();
-            results = data.features;
+            $inspect('Search results:', data);
+            
+            if (data.features) {
+                results = data.features;
+            } else {
+                results = [];
+            }
         } catch (err) {
             error = err instanceof Error ? err.message : 'Search failed';
+            results = [];
         } finally {
             isLoading = false;
         }
@@ -87,10 +98,6 @@
             error = err instanceof Error ? err.message : 'Failed to save location';
         }
     }
-
-    $effect(() => {
-        debouncedSearch;
-    });
 </script>
 
 <div class="w-full max-w-md mx-auto p-4">
@@ -98,7 +105,7 @@
         <input
             type="text"
             value={searchInput}
-            oninput={(e) => searchInput = e.currentTarget.value}
+            oninput={handleInput}
             placeholder="Search for a location..."
             class="w-full p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             aria-label="Location search"

@@ -10,6 +10,7 @@ declare global {
 	}
 	interface ImportMetaEnv {
 		PUBLIC_GEOAPIFY_API_KEY: string;
+		PUBLIC_MAPTILER_KEY: string;
 	}
 }
 
