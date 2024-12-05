@@ -42,13 +42,16 @@
 
 	async function initMap() {
 		try {
-			console.log('Initializing map...');
+			if (!import.meta.env.PUBLIC_MAPTILER_API_KEY) {
+				throw new Error('MapTiler API key is missing');
+			}
+
 			await getUserLocation();
 			console.log('User location:', $state.snapshot(userLocation));
 
 			const mapInstance = new maplibregl.Map({
 				container,
-				style: `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.PUBLIC_MAPTILER_KEY}`,
+				style: `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.PUBLIC_MAPTILER_API_KEY}`,
 				center: userLocation || [-74.5, 40],
 				zoom: 9
 			});
