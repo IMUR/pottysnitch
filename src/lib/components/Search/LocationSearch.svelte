@@ -12,7 +12,6 @@
     let { userLocation } = props satisfies LocationSearchProps;
 
     let autocompleteContainer: HTMLDivElement;
-    let searchInput: HTMLInputElement;
     let autocomplete = $state<InstanceType<typeof GeocoderAutocomplete> | null>(null);
     let selectedPlace = $state<ILocationSubmission | null>(null);
     let error = $state<string | null>(null);
@@ -20,8 +19,6 @@
     $effect(() => {
         if (!autocompleteContainer || autocomplete) return;
 
-        console.log('Initializing geocoder...');
-        
         try {
             const instance = new GeocoderAutocomplete(
                 autocompleteContainer,
@@ -41,7 +38,6 @@
             );
 
             instance.on('select', (location) => {
-                console.log('Location selected:', location);
                 if (location?.properties) {
                     selectedPlace = {
                         properties: {
@@ -66,15 +62,6 @@
             });
 
             autocomplete = instance;
-
-            return () => {
-                if (autocomplete) {
-                    autocomplete = null;
-                }
-                if (autocompleteContainer) {
-                    autocompleteContainer.innerHTML = '';
-                }
-            };
         } catch (err) {
             error = err instanceof Error ? err.message : 'Failed to initialize search';
             console.error('Geocoder initialization error:', err);
@@ -93,7 +80,9 @@
                 body: JSON.stringify(selectedPlace)
             });
 
-            if (!response.ok) throw new Error('Failed to save location');
+            if (!response.ok) {
+                throw new Error('Failed to save location');
+            }
 
             selectedPlace = null;
             if (autocompleteContainer) {
@@ -115,13 +104,16 @@
     </div>
 
     {#if selectedPlace}
-        <button
-            type="button"
-            onclick={handleSubmit}
-            class="mt-4 w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-        >
-            Submit Location
-        </button>
+        <div class="mt-4">
+            <p class="text-sm text-gray-600 mb-2">Selected: {selectedPlace.properties.formatted}</p>
+            <button
+                type="button"
+                onclick={handleSubmit}
+                class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+                Submit Location
+            </button>
+        </div>
     {/if}
 
     {#if error}

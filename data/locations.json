@@ -1,0 +1,20 @@
+[
+  {
+    "properties": {
+      "name": "",
+      "formatted": "314 Mesa Road, Los Angeles, CA 90402, United States of America",
+      "lat": 34.0308136,
+      "lon": -118.51507189024846,
+      "address_line1": "314 Mesa Road",
+      "address_line2": "Los Angeles, CA 90402, United States of America",
+      "city": "Los Angeles",
+      "state": "California",
+      "country": "United States",
+      "postcode": "90402"
+    },
+    "metadata": {
+      "submitted_at": "2024-12-06T17:34:00.200Z",
+      "status": "pending"
+    }
+  }
+]
