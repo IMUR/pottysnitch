@@ -42,35 +42,50 @@
 
 	async function initMap() {
 		try {
-			console.log('Environment variables:', {
-				maptiler: import.meta.env.PUBLIC_MAPTILER_API_KEY,
-				geoapify: import.meta.env.PUBLIC_GEOAPIFY_API_KEY
-			});
-
 			if (!import.meta.env.PUBLIC_MAPTILER_API_KEY) {
 				throw new Error('MapTiler API key is missing');
 			}
 
 			await getUserLocation();
-			console.log('User location:', $state.snapshot(userLocation));
 
 			const mapInstance = new maplibregl.Map({
 				container,
 				style: `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.PUBLIC_MAPTILER_API_KEY}`,
 				center: userLocation || [-74.5, 40],
-				zoom: 9
+				zoom: 13,
+				antialias: true,
+				preserveDrawingBuffer: true
 			});
 
-			console.log('Map instance created');
-			
 			map = mapInstance;
-			
+
+			if (userLocation) {
+				new maplibregl.Marker()
+					.setLngLat(userLocation)
+					.addTo(mapInstance);
+			}
+
 			mapInstance.on('load', () => {
-				console.log('Map loaded');
 				isLoading = false;
+				
+				if (userLocation) {
+					mapInstance.flyTo({
+						center: userLocation,
+						zoom: 13,
+						essential: true
+					});
+				}
 			});
+
+			mapInstance.addControl(new maplibregl.NavigationControl(), 'top-right');
+			mapInstance.addControl(new maplibregl.GeolocateControl({
+				positionOptions: {
+					enableHighAccuracy: true
+				},
+				trackUserLocation: true
+			}), 'top-right');
+			mapInstance.addControl(new maplibregl.ScaleControl(), 'bottom-left');
 		} catch (err) {
-			console.error('Map initialization error:', err);
 			error = err instanceof Error ? err : new Error('Map initialization failed');
 			isLoading = false;
 		}
@@ -89,7 +104,7 @@
 	});
 </script>
 
-<div class="relative h-screen w-full" bind:this={container}>
+<div class="relative w-full h-full" bind:this={container}>
 	{#if error}
 		<div class="absolute inset-0 flex items-center justify-center bg-gray-50">
 			<p class="text-red-600">{error.message}</p>
@@ -103,12 +118,7 @@
 
 <style>
 	:global(.maplibregl-map) {
-		height: 100%;
-		width: 100%;
-	}
-
-	:global(.maplibregl-canvas-container) {
-		height: 100%;
-		width: 100%;
+		position: absolute;
+		inset: 0;
 	}
 </style> 
