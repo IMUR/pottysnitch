@@ -125,20 +125,22 @@
         {#if results.length > 0}
             <ul 
                 id="search-results"
-                class="absolute w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto"
+                class="absolute w-full mt-1 bg-white border rounded-lg shadow-lg max-h-60 overflow-y-auto z-50"
                 role="listbox"
             >
                 {#each results as result}
-                    <button
-                        type="button"
-                        class="w-full text-left p-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
-                        onclick={() => selectLocation(result)}
-                        onkeydown={(e) => handleKeyDown(e, result)}
-                        role="option"
-                        aria-selected={selectedLocation === result}
-                    >
-                        {result.properties.formatted}
-                    </button>
+                    <li>
+                        <button
+                            type="button"
+                            class="w-full text-left p-2 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                            onclick={() => selectLocation(result)}
+                            onkeydown={(e) => handleKeyDown(e, result)}
+                            role="option"
+                            aria-selected={selectedLocation === result}
+                        >
+                            {result.properties.formatted}
+                        </button>
+                    </li>
                 {/each}
             </ul>
         {/if}

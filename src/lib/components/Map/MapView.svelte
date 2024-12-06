@@ -42,6 +42,11 @@
 
 	async function initMap() {
 		try {
+			console.log('Environment variables:', {
+				maptiler: import.meta.env.PUBLIC_MAPTILER_API_KEY,
+				geoapify: import.meta.env.PUBLIC_GEOAPIFY_API_KEY
+			});
+
 			if (!import.meta.env.PUBLIC_MAPTILER_API_KEY) {
 				throw new Error('MapTiler API key is missing');
 			}
@@ -84,7 +89,7 @@
 	});
 </script>
 
-<div class="relative w-full h-[calc(100vh-4rem)]" bind:this={container}>
+<div class="relative h-screen w-full" bind:this={container}>
 	{#if error}
 		<div class="absolute inset-0 flex items-center justify-center bg-gray-50">
 			<p class="text-red-600">{error.message}</p>
