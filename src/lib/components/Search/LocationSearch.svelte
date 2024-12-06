@@ -14,6 +14,7 @@
     let autocompleteContainer: HTMLDivElement;
     let autocomplete = $state<InstanceType<typeof GeocoderAutocomplete> | null>(null);
     let selectedPlace = $state<ILocationSubmission | null>(null);
+    let doorCode = $state<string>('');
     let error = $state<string | null>(null);
 
     $effect(() => {
@@ -58,6 +59,7 @@
                             status: 'pending'
                         }
                     };
+                    doorCode = '';
                 }
             });
 
@@ -72,12 +74,20 @@
         if (!selectedPlace) return;
 
         try {
+            const locationWithDoorCode = {
+                ...selectedPlace,
+                properties: {
+                    ...selectedPlace.properties,
+                    doorCode: doorCode.trim() || undefined
+                }
+            };
+
             const response = await fetch('/api/locations', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(selectedPlace)
+                body: JSON.stringify(locationWithDoorCode)
             });
 
             if (!response.ok) {
@@ -85,6 +95,7 @@
             }
 
             selectedPlace = null;
+            doorCode = '';
             if (autocompleteContainer) {
                 autocompleteContainer.innerHTML = '';
                 autocomplete = null;
@@ -104,8 +115,15 @@
     </div>
 
     {#if selectedPlace}
-        <div class="mt-4">
-            <p class="text-sm text-gray-600 mb-2">Selected: {selectedPlace.properties.formatted}</p>
+        <div class="mt-4 space-y-4">
+            <div class="bg-white rounded-lg shadow-lg p-2">
+                <input
+                    type="text"
+                    bind:value={doorCode}
+                    placeholder="Door code (optional)"
+                    class="w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+            </div>
             <button
                 type="button"
                 onclick={handleSubmit}
