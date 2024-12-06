@@ -1,97 +1,120 @@
 <script lang="ts">
     import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
     import type { GeocoderAutocompleteOptions, LocationType } from '@geoapify/geocoder-autocomplete';
+    import '@geoapify/geocoder-autocomplete/styles/minimal.css';
     import type { ILocationSubmission } from '$lib/types/location';
 
-    let props = $props();
-    let { userLocation } = props;
+    interface LocationSearchProps {
+        userLocation: { longitude: number; latitude: number } | null;
+    }
 
-    let searchContainer: HTMLDivElement;
-    let autocomplete = $state<GeocoderAutocomplete | null>(null);
-    let selectedLocation = $state<ILocationSubmission | null>(null);
+    let props = $props();
+    let { userLocation } = props satisfies LocationSearchProps;
+
+    let autocompleteContainer: HTMLDivElement;
+    let searchInput: HTMLInputElement;
+    let autocomplete = $state<InstanceType<typeof GeocoderAutocomplete> | null>(null);
+    let selectedPlace = $state<ILocationSubmission | null>(null);
+    let error = $state<string | null>(null);
 
     $effect(() => {
-        if (!searchContainer || autocomplete) return;
+        if (!autocompleteContainer || autocomplete) return;
 
-        const instance = new GeocoderAutocomplete(
-            searchContainer,
-            import.meta.env.PUBLIC_GEOAPIFY_API_KEY,
-            {
-                placeholder: "Search for a location...",
-                type: 'amenity' as LocationType,
-                limit: 6,
-                bias: userLocation ? {
-                    proximity: {
-                        lon: userLocation.longitude,
-                        lat: userLocation.latitude
-                    }
-                } : undefined
-            }
-        );
+        console.log('Initializing geocoder...');
+        
+        try {
+            const instance = new GeocoderAutocomplete(
+                autocompleteContainer,
+                import.meta.env.PUBLIC_GEOAPIFY_API_KEY,
+                {
+                    placeholder: 'Search for a location...',
+                    type: 'amenity' as LocationType,
+                    bias: userLocation ? {
+                        proximity: {
+                            lon: userLocation.longitude,
+                            lat: userLocation.latitude
+                        }
+                    } : undefined,
+                    debounceDelay: 100,
+                    skipIcons: true
+                }
+            );
 
-        instance.on('select', (location) => {
-            if (location) {
-                selectedLocation = {
-                    properties: {
-                        name: location.properties.name || '',
-                        formatted: location.properties.formatted,
-                        lat: location.properties.lat,
-                        lon: location.properties.lon,
-                        address_line1: location.properties.address_line1 || '',
-                        address_line2: location.properties.address_line2,
-                        city: location.properties.city,
-                        state: location.properties.state,
-                        country: location.properties.country,
-                        postcode: location.properties.postcode,
-                        category: location.properties.category
-                    },
-                    metadata: {
-                        submitted_at: new Date().toISOString(),
-                        status: 'pending'
-                    }
-                };
-            }
-        });
+            instance.on('select', (location) => {
+                console.log('Location selected:', location);
+                if (location?.properties) {
+                    selectedPlace = {
+                        properties: {
+                            name: location.properties.name || '',
+                            formatted: location.properties.formatted,
+                            lat: location.properties.lat,
+                            lon: location.properties.lon,
+                            address_line1: location.properties.address_line1 || '',
+                            address_line2: location.properties.address_line2,
+                            city: location.properties.city,
+                            state: location.properties.state,
+                            country: location.properties.country,
+                            postcode: location.properties.postcode,
+                            category: location.properties.category
+                        },
+                        metadata: {
+                            submitted_at: new Date().toISOString(),
+                            status: 'pending'
+                        }
+                    };
+                }
+            });
 
-        autocomplete = instance;
+            autocomplete = instance;
 
-        return () => {
-            if (searchContainer) {
-                searchContainer.innerHTML = '';
-            }
-        };
+            return () => {
+                if (autocomplete) {
+                    autocomplete = null;
+                }
+                if (autocompleteContainer) {
+                    autocompleteContainer.innerHTML = '';
+                }
+            };
+        } catch (err) {
+            error = err instanceof Error ? err.message : 'Failed to initialize search';
+            console.error('Geocoder initialization error:', err);
+        }
     });
 
     async function handleSubmit() {
-        if (!selectedLocation) return;
-        
+        if (!selectedPlace) return;
+
         try {
             const response = await fetch('/api/locations', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(selectedLocation)
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(selectedPlace)
             });
-            
+
             if (!response.ok) throw new Error('Failed to save location');
-            
-            selectedLocation = null;
-            if (searchContainer) {
-                searchContainer.innerHTML = '';
-                // Reinitialize the autocomplete
+
+            selectedPlace = null;
+            if (autocompleteContainer) {
+                autocompleteContainer.innerHTML = '';
                 autocomplete = null;
             }
         } catch (err) {
-            console.error('Failed to submit location:', err);
+            error = err instanceof Error ? err.message : 'Failed to save location';
         }
     }
 </script>
 
 <div class="w-full max-w-md mx-auto p-4">
-    <div class="relative w-80">
-        <div bind:this={searchContainer} class="geocoder-container"></div>
+    <div class="relative w-full bg-white rounded-lg shadow-lg p-2">
+        <div 
+            bind:this={autocompleteContainer} 
+            class="geocoder-container w-full"
+        ></div>
     </div>
-    
-    {#if selectedLocation}
+
+    {#if selectedPlace}
         <button
             type="button"
             onclick={handleSubmit}
@@ -100,34 +123,31 @@
             Submit Location
         </button>
     {/if}
+
+    {#if error}
+        <p class="mt-2 text-red-500 bg-white p-2 rounded" role="alert">{error}</p>
+    {/if}
 </div>
 
 <style>
     :global(.geocoder-container) {
         width: 100%;
+        min-height: 40px;
     }
+
     :global(.geoapify-autocomplete-input) {
-        width: 100%;
-        padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
-        border: 1px solid #e2e8f0;
-        box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        @apply w-full;
     }
-    :global(.geoapify-autocomplete-input:focus) {
-        outline: none;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 2px rgb(59 130 246 / 0.5);
+
+    :global(.geoapify-autocomplete-input input) {
+        @apply w-full px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500;
     }
+
     :global(.geoapify-autocomplete-items) {
-        position: absolute;
-        width: 100%;
-        margin-top: 0.25rem;
-        background-color: white;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.5rem;
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-        max-height: 15rem;
-        overflow-y: auto;
-        z-index: 50;
+        @apply absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg;
+    }
+
+    :global(.geoapify-autocomplete-item) {
+        @apply px-4 py-2 hover:bg-gray-100 cursor-pointer;
     }
 </style> 

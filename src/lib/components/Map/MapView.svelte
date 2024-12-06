@@ -3,9 +3,15 @@
 	import type { Map, LngLatLike } from 'maplibre-gl';
 	import 'maplibre-gl/dist/maplibre-gl.css';
 
+	interface MapViewProps {
+		userLocation: { longitude: number; latitude: number } | null;
+	}
+
+	let props = $props();
+	let { userLocation } = props satisfies MapViewProps;
+
 	let container: HTMLDivElement;
 	let map = $state<Map | null>(null);
-	let userLocation = $state<LngLatLike | null>(null);
 	let isLoading = $state(true);
 	let error = $state<Error | null>(null);
 
