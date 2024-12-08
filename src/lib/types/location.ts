@@ -11,6 +11,7 @@ export interface ILocationSubmission {
         country?: string;      
         postcode?: string;     
         category?: string;     // Type of establishment
+        doorCode?: string;     // Added doorCode property
     };
     metadata: {
         submitted_at: string;   // ISO timestamp
