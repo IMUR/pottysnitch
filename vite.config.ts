@@ -8,5 +8,9 @@ export default defineConfig({
 	},
 	ssr: {
 		noExternal: ['maplibre-gl']
+	},
+	define: {
+		'import.meta.env.PUBLIC_MAPTILER_API_KEY': JSON.stringify("iCZxhJbOaaYuKNttr71A"),
+		'import.meta.env.PUBLIC_GEOAPIFY_API_KEY': JSON.stringify("d65bf55763ea4818a59b44912c09c9aa")
 	}
 });

@@ -1,103 +1,106 @@
 {
+  "version": "1.0",
+  "schema": "https://cursorrules.dev/schema/v1",
+  "metadata": {
+    "project": "pottysnitch",
+    "framework": "sveltekit",
+    "typescript": true
+  },
   "rules": {
-    "map-container": {
-      "description": "MapLibre container requirements",
+    "command-safety": {
+      "severity": "critical",
+      "description": "CLI and command execution safety requirements",
+      "validation": {
+        "pattern": "^(single|group)_command:\\s.+$",
+        "examples": [
+          "single_command: git status",
+          "group_command: git add && git commit"
+        ]
+      },
       "rules": [
-        "Container must have explicit height/width",
-        "All parent elements need height definitions",
-        "Avoid display:contents on map parent elements",
-        "Include maplibre-gl.css in app.html"
+        {
+          "id": "CMD001",
+          "name": "single-command-block",
+          "description": "Each code block must contain only one command type",
+          "severity": "error"
+        },
+        {
+          "id": "CMD002",
+          "name": "destructive-command-isolation",
+          "description": "Destructive commands must be in isolated blocks",
+          "severity": "error"
+        }
       ]
     },
     "runes": {
-      "state-management": {
-        "prefer": [
-          "$state<Type>(initialValue)",
-          "$derived(() => computation)",
-          "$effect(() => sideEffect)"
-        ],
-        "avoid": [
-          "let without $state",
-          "writable stores for component state",
-          "manual subscription management"
-        ]
+      "severity": "error",
+      "validation": {
+        "pattern": "^\\$(?:state|derived|effect|props|createEventDispatcher)",
+        "examples": ["$state<Type>", "$derived(() => value)"]
       },
-      "props": {
-        "syntax": "let { propName } = $props<PropType>();",
-        "validation": "Use TypeScript interfaces for prop types"
-      },
-      "events": {
-        "syntax": "let { dispatch } = $createEventDispatcher<EventType>();"
-      }
-    },
-    "typescript": {
-      "required": [
-        "Explicit types for all state variables",
-        "Interface definitions for props",
-        "Type assertions for maplibre-gl objects",
-        "Event type definitions"
-      ],
-      "naming": {
-        "interfaces": "IMapState, ILocationData",
-        "types": "MapConfig, LocationCoords",
-        "events": "MapEventDetail, LocationUpdateEvent"
-      }
-    },
-    "data-handling": {
-      "geolocation": {
-        "pattern": "async/await with proper error types",
-        "storage": "$state with LngLatLike type"
-      },
-      "map-state": {
-        "initialization": "Defer until container mounted",
-        "cleanup": "Use $effect cleanup return"
-      }
+      "rules": [
+        {
+          "id": "RUN001",
+          "name": "state-declaration",
+          "pattern": "^\\$state<[A-Z][\\w]*>",
+          "severity": "error"
+        }
+      ]
     },
     "component-structure": {
-      "order": [
-        "Imports",
-        "TypeScript interfaces",
-        "State declarations",
-        "Derived values",
-        "Methods",
-        "Effects",
-        "Template"
-      ],
-      "file-naming": "PascalCase.svelte"
+      "severity": "warning",
+      "description": "Component organization and documentation requirements",
+      "rules": [
+        {
+          "id": "CMP001",
+          "name": "script-order",
+          "description": "Script section must follow: imports, types, props, state, derived, methods, effects",
+          "severity": "warning"
+        },
+        {
+          "id": "CMP002",
+          "name": "documentation",
+          "description": "Components must have JSDoc comments describing purpose and props",
+          "severity": "warning"
+        }
+      ]
     },
-    "error-patterns": {
-      "geolocation": "Use typed error messages object",
-      "map-loading": "Show loading/error states",
-      "type-guards": "Use instanceof for Error types"
+    "error-handling": {
+      "severity": "error",
+      "description": "Error handling and type safety requirements",
+      "rules": [
+        {
+          "id": "ERR001",
+          "name": "type-guard-errors",
+          "description": "Use instanceof for Error type guards",
+          "pattern": "err instanceof Error",
+          "severity": "error"
+        },
+        {
+          "id": "ERR002",
+          "name": "async-error-states",
+          "description": "Async operations must handle loading and error states",
+          "severity": "error"
+        }
+      ]
     },
-    "optimization": {
-      "map-instance": "Single instance, cleanup on destroy",
-      "derived-values": "Minimize computations in $derived",
-      "effect-dependencies": "Explicit dependency tracking"
-    },
-    "comments": {
-      "required": [
-        "Component purpose",
-        "Prop interfaces",
-        "Complex state relationships",
-        "Effect dependencies"
-      ],
-      "format": "JSDoc style with @param and @returns"
+    "state-management": {
+      "severity": "warning",
+      "description": "State management preferences and patterns",
+      "rules": [
+        {
+          "id": "STT001",
+          "name": "runes-over-stores",
+          "description": "Prefer runes over stores for component-level state",
+          "severity": "warning"
+        },
+        {
+          "id": "STT002",
+          "name": "effect-cleanup",
+          "description": "Effects must return cleanup function when creating subscriptions",
+          "severity": "error"
+        }
+      ]
     }
-  },
-
-  "conventions": {
-    "state-management": "Use runes over stores when possible",
-    "typing": "Prefer interfaces over type aliases for objects",
-    "async": "Always handle loading and error states",
-    "cleanup": "Implement cleanup in $effect returns",
-    "css": "Use Tailwind classes with global styles only when necessary"
-  },
-
-  "warnings": {
-    "map-rendering": "Check container height hierarchy",
-    "runes-lifecycle": "Effects run after DOM updates",
-    "typescript-strictness": "Enable strict mode and null checks",
-    "prop-typing": "Always type $props generic"
   }
-} 
+}
