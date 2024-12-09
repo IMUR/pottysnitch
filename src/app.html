@@ -1,17 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+		/>
 		<title>PottySnitch</title>
 		<style>
-			body { margin: 0; padding: 0; }
-			html, body { height: 100%; }
-			body > div { height: 100%; display: contents; }
+			body {
+				margin: 0;
+				padding: 0;
+			}
+			html,
+			body {
+				height: 100%;
+			}
+			body > div {
+				height: 100%;
+				display: contents;
+			}
 		</style>
-		<link rel='stylesheet' href='https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css' />
-		<link rel="stylesheet" href="https://unpkg.com/@geoapify/geocoder-autocomplete@^1/styles/minimal.css">
+		<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" />
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/@geoapify/geocoder-autocomplete@^1/styles/minimal.css"
+		/>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

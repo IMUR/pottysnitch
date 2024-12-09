@@ -33,7 +33,7 @@
 
 <div class="relative h-full">
 	<MapView {userLocation} />
-	<div class="absolute top-4 left-1/2 -translate-x-1/2 z-10">
+	<div class="absolute left-1/2 top-4 z-10 -translate-x-1/2">
 		<LocationSearch {userLocation} />
 	</div>
 </div>

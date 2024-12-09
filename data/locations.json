@@ -1,96 +1,96 @@
 [
-  {
-    "properties": {
-      "name": "",
-      "formatted": "314 Mesa Road, Los Angeles, CA 90402, United States of America",
-      "lat": 34.0308136,
-      "lon": -118.51507189024846,
-      "address_line1": "314 Mesa Road",
-      "address_line2": "Los Angeles, CA 90402, United States of America",
-      "city": "Los Angeles",
-      "state": "California",
-      "country": "United States",
-      "postcode": "90402"
-    },
-    "metadata": {
-      "submitted_at": "2024-12-06T17:34:00.200Z",
-      "status": "pending"
-    }
-  },
-  {
-    "properties": {
-      "name": "Pavilions",
-      "formatted": "Pavilions, 820 Montana Avenue, Santa Monica, CA 90403, United States of America",
-      "lat": 34.027913600000005,
-      "lon": -118.49994163913613,
-      "address_line1": "Pavilions",
-      "address_line2": "820 Montana Avenue, Santa Monica, CA 90403, United States of America",
-      "city": "Santa Monica",
-      "state": "California",
-      "country": "United States",
-      "postcode": "90403",
-      "category": "commercial.supermarket"
-    },
-    "metadata": {
-      "submitted_at": "2024-12-06T17:39:57.646Z",
-      "status": "pending"
-    }
-  },
-  {
-    "properties": {
-      "name": "Guitar Center",
-      "formatted": "Guitar Center, 14209 Ventura Boulevard, Los Angeles, CA 91423, United States of America",
-      "lat": 34.1501534,
-      "lon": -118.44234422724307,
-      "address_line1": "Guitar Center",
-      "address_line2": "14209 Ventura Boulevard, Los Angeles, CA 91423, United States of America",
-      "city": "Los Angeles",
-      "state": "California",
-      "country": "United States",
-      "postcode": "91423",
-      "category": "commercial.hobby.music"
-    },
-    "metadata": {
-      "submitted_at": "2024-12-06T17:40:38.577Z",
-      "status": "pending"
-    }
-  },
-  {
-    "properties": {
-      "name": "Ace Hardware",
-      "formatted": "Ace Hardware, 2020 South Bundy Drive, Los Angeles, CA 90025, United States of America",
-      "lat": 34.0338265,
-      "lon": -118.4543665,
-      "address_line1": "Ace Hardware",
-      "address_line2": "2020 South Bundy Drive, Los Angeles, CA 90025, United States of America",
-      "city": "Los Angeles",
-      "state": "California",
-      "country": "United States",
-      "postcode": "90025",
-      "category": "commercial.houseware_and_hardware.doityourself"
-    },
-    "metadata": {
-      "submitted_at": "2024-12-06T17:56:56.050Z",
-      "status": "pending"
-    }
-  },
-  {
-    "properties": {
-      "name": "Macy's",
-      "formatted": "Macy's, 10250 Santa Monica Boulevard, Los Angeles, CA 90067, United States of America",
-      "lat": 34.060366,
-      "lon": -118.418353,
-      "address_line1": "Macy's",
-      "address_line2": "10250 Santa Monica Boulevard, Los Angeles, CA 90067, United States of America",
-      "city": "Los Angeles",
-      "state": "California",
-      "country": "United States",
-      "postcode": "90067",
-      "doorCode": "123123"
-    },
-    "metadata": {
-      "submitted_at": "2024-12-06T17:59:41.384Z",
-      "status": "pending"
-    }
-  }
+	{
+		"properties": {
+			"name": "",
+			"formatted": "314 Mesa Road, Los Angeles, CA 90402, United States of America",
+			"lat": 34.0308136,
+			"lon": -118.51507189024846,
+			"address_line1": "314 Mesa Road",
+			"address_line2": "Los Angeles, CA 90402, United States of America",
+			"city": "Los Angeles",
+			"state": "California",
+			"country": "United States",
+			"postcode": "90402"
+		},
+		"metadata": {
+			"submitted_at": "2024-12-06T17:34:00.200Z",
+			"status": "pending"
+		}
+	},
+	{
+		"properties": {
+			"name": "Pavilions",
+			"formatted": "Pavilions, 820 Montana Avenue, Santa Monica, CA 90403, United States of America",
+			"lat": 34.027913600000005,
+			"lon": -118.49994163913613,
+			"address_line1": "Pavilions",
+			"address_line2": "820 Montana Avenue, Santa Monica, CA 90403, United States of America",
+			"city": "Santa Monica",
+			"state": "California",
+			"country": "United States",
+			"postcode": "90403",
+			"category": "commercial.supermarket"
+		},
+		"metadata": {
+			"submitted_at": "2024-12-06T17:39:57.646Z",
+			"status": "pending"
+		}
+	},
+	{
+		"properties": {
+			"name": "Guitar Center",
+			"formatted": "Guitar Center, 14209 Ventura Boulevard, Los Angeles, CA 91423, United States of America",
+			"lat": 34.1501534,
+			"lon": -118.44234422724307,
+			"address_line1": "Guitar Center",
+			"address_line2": "14209 Ventura Boulevard, Los Angeles, CA 91423, United States of America",
+			"city": "Los Angeles",
+			"state": "California",
+			"country": "United States",
+			"postcode": "91423",
+			"category": "commercial.hobby.music"
+		},
+		"metadata": {
+			"submitted_at": "2024-12-06T17:40:38.577Z",
+			"status": "pending"
+		}
+	},
+	{
+		"properties": {
+			"name": "Ace Hardware",
+			"formatted": "Ace Hardware, 2020 South Bundy Drive, Los Angeles, CA 90025, United States of America",
+			"lat": 34.0338265,
+			"lon": -118.4543665,
+			"address_line1": "Ace Hardware",
+			"address_line2": "2020 South Bundy Drive, Los Angeles, CA 90025, United States of America",
+			"city": "Los Angeles",
+			"state": "California",
+			"country": "United States",
+			"postcode": "90025",
+			"category": "commercial.houseware_and_hardware.doityourself"
+		},
+		"metadata": {
+			"submitted_at": "2024-12-06T17:56:56.050Z",
+			"status": "pending"
+		}
+	},
+	{
+		"properties": {
+			"name": "Macy's",
+			"formatted": "Macy's, 10250 Santa Monica Boulevard, Los Angeles, CA 90067, United States of America",
+			"lat": 34.060366,
+			"lon": -118.418353,
+			"address_line1": "Macy's",
+			"address_line2": "10250 Santa Monica Boulevard, Los Angeles, CA 90067, United States of America",
+			"city": "Los Angeles",
+			"state": "California",
+			"country": "United States",
+			"postcode": "90067",
+			"doorCode": "123123"
+		},
+		"metadata": {
+			"submitted_at": "2024-12-06T17:59:41.384Z",
+			"status": "pending"
+		}
+	}
 ]

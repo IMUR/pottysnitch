@@ -2,14 +2,14 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-html, 
+html,
 body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+	height: 100%;
+	margin: 0;
+	padding: 0;
 }
 
 /* Required for Svelte 5 root rendering */
 body > div {
-  height: 100%;
+	height: 100%;
 }
