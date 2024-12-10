@@ -3,6 +3,9 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
+	build: {
+		sourcemap: true
+	},
 	optimizeDeps: {
 		include: ['maplibre-gl']
 	},
@@ -15,6 +18,7 @@ export default defineConfig({
 		),
 		'import.meta.env.PUBLIC_GEOAPIFY_API_KEY': JSON.stringify(
 			process.env.VITE_PUBLIC_GEOAPIFY_API_KEY
-		)
+		),
+		'process.env.NODE_ENV': JSON.stringify('development')
 	}
 });
