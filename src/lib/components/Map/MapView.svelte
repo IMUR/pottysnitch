@@ -1,7 +1,7 @@
 <script lang="ts">
 	import maplibregl from 'maplibre-gl';
 	import type { Map } from 'maplibre-gl';
-	import type { ILocationSubmission } from '$lib/types/location';
+	import type { ILocationSubmission } from '../../types/location';
 
 	interface MapViewProps {
 		userLocation: { longitude: number; latitude: number } | null;

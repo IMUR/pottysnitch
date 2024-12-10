@@ -1,5 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import { fileURLToPath, URL } from 'url';
 
 export default defineConfig({
 	plugins: [sveltekit()],
@@ -9,16 +10,13 @@ export default defineConfig({
 	optimizeDeps: {
 		include: ['maplibre-gl']
 	},
+	envPrefix: 'VITE_PUBLIC_',
 	ssr: {
 		noExternal: ['maplibre-gl']
 	},
-	define: {
-		'import.meta.env.PUBLIC_MAPTILER_API_KEY': JSON.stringify(
-			process.env.VITE_PUBLIC_MAPTILER_API_KEY
-		),
-		'import.meta.env.PUBLIC_GEOAPIFY_API_KEY': JSON.stringify(
-			process.env.VITE_PUBLIC_GEOAPIFY_API_KEY
-		),
-		'process.env.NODE_ENV': JSON.stringify('development')
+	resolve: {
+		alias: {
+			$lib: fileURLToPath(new URL('./src/lib', import.meta.url))
+		}
 	}
 });

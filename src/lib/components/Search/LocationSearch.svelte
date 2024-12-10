@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
 	import '@geoapify/geocoder-autocomplete/styles/minimal.css';
-	import type { ILocationSubmission } from '$lib/types/location';
+	import type { ILocationSubmission } from '../../../lib/types/location';
 
 	interface LocationSearchProps {
 		userLocation: { longitude: number; latitude: number } | null;

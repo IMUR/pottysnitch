@@ -1,6 +1,6 @@
 <script lang="ts">
-	import MapView from '$lib/components/Map/MapView.svelte';
-	import LocationSearch from '$lib/components/Search/LocationSearch.svelte';
+	import MapView from '../lib/components/Map/MapView.svelte';
+	import LocationSearch from '../lib/components/Search/LocationSearch.svelte';
 
 	let userLocation = $state<{ longitude: number; latitude: number } | null>(null);
 
