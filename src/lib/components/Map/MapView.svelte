@@ -49,7 +49,7 @@
 			mapInstance.on('load', () => {
 				console.log('Map loaded successfully');
 				isLoading = false;
-				
+
 				// Fetch locations after map is loaded
 				fetchLocations().then(() => {
 					addLocationMarkers();
