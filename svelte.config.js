@@ -15,7 +15,8 @@ const config = {
 		},
 		appDir: 'app',
 		prerender: {
-			handleMissingId: 'ignore'
+			handleMissingId: 'ignore',
+			entries: ['*', '/api/locations']
 		}
 	}
 };
