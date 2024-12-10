@@ -18,5 +18,10 @@ export default defineConfig({
 		alias: {
 			$lib: fileURLToPath(new URL('./src/lib', import.meta.url))
 		}
+	},
+	// Enable dev tools and source maps
+	define: {
+		'process.env.NODE_ENV': '"development"',
+		'import.meta.env.DEV': 'true'
 	}
 });

@@ -18,6 +18,11 @@ const config = {
 			handleMissingId: 'ignore',
 			entries: ['*', '/api/locations']
 		}
+	},
+
+	compilerOptions: {
+		dev: true,
+		enableSourcemap: true
 	}
 };
 
