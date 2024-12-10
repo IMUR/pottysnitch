@@ -17,16 +17,16 @@ jobs:
         with:
           node-version: '20'
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install
 
       - name: Format
         run: pnpm format
-        
+
       - name: Type check
         run: pnpm check
-        
+
       - name: Lint
         run: pnpm lint
 
@@ -46,7 +46,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'pnpm'
-      
+
       - name: Install dependencies
         run: pnpm install
 
@@ -71,7 +71,7 @@ jobs:
       pages: write
       id-token: write
     concurrency:
-      group: "pages"
+      group: 'pages'
       cancel-in-progress: false
     steps:
       - name: Deploy to GitHub Pages
