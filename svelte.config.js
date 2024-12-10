@@ -6,16 +6,11 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter({
-			pages: 'build',
-			assets: 'build',
-			fallback: '404.html',
-			precompress: false,
-			strict: true
-		}),
+		adapter: adapter(),
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/pottysnitch' : ''
-		}
+			base: process.env.NODE_ENV === 'production' ? '/pottysnitch' : '',
+		},
+		appDir: 'app'
 	}
 };
 
