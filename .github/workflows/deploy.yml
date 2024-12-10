@@ -1,9 +1,9 @@
 name: Test and Deploy
 on:
   push:
-    branches: [ main, WIN-LIN ]
+    branches: [ WIN-LIN ]
   pull_request:
-    branches: [ main ]
+    branches: [ WIN-LIN ]
 
 jobs:
   test:
