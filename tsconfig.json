@@ -10,11 +10,7 @@
 		"sourceMap": true,
 		"strict": true,
 		"moduleResolution": "bundler",
-		"types": ["vite/client", "svelte", "node"],
-		"paths": {
-			"$lib": ["./src/lib"],
-			"$lib/*": ["./src/lib/*"]
-		}
+		"types": ["vite/client", "svelte", "node"]
 	},
 	"include": [
 		".svelte-kit/ambient.d.ts",
