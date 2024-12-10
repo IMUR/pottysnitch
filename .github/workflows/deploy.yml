@@ -49,6 +49,7 @@ jobs:
 
       - name: Build
         env:
+          NODE_ENV: development
           VITE_PUBLIC_MAPTILER_API_KEY: ${{ secrets.VITE_PUBLIC_MAPTILER_API_KEY }}
           VITE_PUBLIC_GEOAPIFY_API_KEY: ${{ secrets.VITE_PUBLIC_GEOAPIFY_API_KEY }}
         run: pnpm build
