@@ -22,7 +22,7 @@
 		try {
 			const instance = new GeocoderAutocomplete(
 				autocompleteContainer,
-				import.meta.env.PUBLIC_GEOAPIFY_API_KEY,
+				import.meta.env.VITE_PUBLIC_GEOAPIFY_API_KEY,
 				{
 					placeholder: 'Search for a location...',
 					type: 'amenity',

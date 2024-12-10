@@ -39,7 +39,7 @@
 				try {
 					const mapInstance = new maplibregl.Map({
 						container,
-						style: `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.PUBLIC_MAPTILER_API_KEY}`,
+						style: `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.VITE_PUBLIC_MAPTILER_API_KEY}`,
 						center: [userLocation.longitude, userLocation.latitude],
 						zoom: 13
 					});
