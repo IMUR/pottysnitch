@@ -29,7 +29,11 @@ jobs:
 
   build:
     needs: test
-    environment: API_KEYS
+    environment: github-pages
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,30 +50,28 @@ jobs:
 
       - name: Build
         env:
-          PUBLIC_MAPTILER_API_KEY: ${{ vars.PUBLIC_MAPTILER_API_KEY }}
-          PUBLIC_GEOAPIFY_API_KEY: ${{ vars.PUBLIC_GEOAPIFY_API_KEY }}
+          VITE_PUBLIC_MAPTILER_API_KEY: ${{ secrets.VITE_PUBLIC_MAPTILER_API_KEY }}
+          VITE_PUBLIC_GEOAPIFY_API_KEY: ${{ secrets.VITE_PUBLIC_GEOAPIFY_API_KEY }}
         run: pnpm build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: build
-          path: build/
+          path: build
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: build/
-
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-          enable_jekyll: false
+        id: deployment
+        uses: actions/deploy-pages@v4
