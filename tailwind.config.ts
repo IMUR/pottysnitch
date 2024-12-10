@@ -7,8 +7,14 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 
 	theme: {
-		extend: {}
+		extend: {
+			zIndex: {
+				'100': '100'
+			}
+		}
 	},
 
-	plugins: [typography, forms, containerQueries]
+	plugins: [typography, forms, containerQueries],
+
+	important: true
 } satisfies Config;

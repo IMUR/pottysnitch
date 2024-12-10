@@ -2,15 +2,23 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-html,
-body {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
 
-/* Required for Svelte 5 root rendering */
-body > div {
-	height: 100%;
-	display: contents;
+    html,
+    body {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    /* Required for Svelte 5 root rendering */
+    body > div {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
 }

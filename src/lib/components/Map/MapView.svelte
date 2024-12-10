@@ -1,7 +1,6 @@
 <script lang="ts">
 	import maplibregl from 'maplibre-gl';
 	import type { Map } from 'maplibre-gl';
-	import 'maplibre-gl/dist/maplibre-gl.css';
 	import type { ILocationSubmission } from '$lib/types/location';
 
 	interface MapViewProps {
