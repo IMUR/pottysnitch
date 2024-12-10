@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
-	import type { GeocoderAutocompleteOptions, LocationType } from '@geoapify/geocoder-autocomplete';
 	import '@geoapify/geocoder-autocomplete/styles/minimal.css';
 	import type { ILocationSubmission } from '$lib/types/location';
 
@@ -26,7 +25,7 @@
 				import.meta.env.PUBLIC_GEOAPIFY_API_KEY,
 				{
 					placeholder: 'Search for a location...',
-					type: 'amenity' as LocationType,
+					type: 'amenity',
 					bias: userLocation
 						? {
 								proximity: {

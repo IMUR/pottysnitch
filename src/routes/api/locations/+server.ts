@@ -12,12 +12,12 @@ export const GET: RequestHandler = async () => {
 			const existing = await readFile(dataPath, 'utf-8');
 			const locations: ILocationSubmission[] = JSON.parse(existing);
 			return json(locations);
-		} catch (error) {
+		} catch {
 			// File doesn't exist yet, return empty array
 			return json([]);
 		}
-	} catch (error) {
-		console.error('Failed to fetch locations:', error);
+	} catch {
+		console.error('Failed to fetch locations:');
 		return json({ error: 'Failed to fetch locations' }, { status: 500 });
 	}
 };
@@ -34,7 +34,7 @@ export const POST: RequestHandler = async ({ request }) => {
 		try {
 			const existing = await readFile(dataPath, 'utf-8');
 			locations = JSON.parse(existing);
-		} catch (error) {
+		} catch {
 			// File doesn't exist yet, use empty array
 		}
 
@@ -43,8 +43,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		await writeFile(dataPath, JSON.stringify(locations, null, 2));
 
 		return json({ success: true });
-	} catch (error) {
-		console.error('Failed to save location:', error);
+	} catch {
+		console.error('Failed to save location:');
 		return json({ error: 'Failed to save location' }, { status: 500 });
 	}
 };

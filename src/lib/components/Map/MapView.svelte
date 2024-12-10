@@ -15,7 +15,6 @@
 	let isLoading = $state(true);
 	let error = $state<Error | null>(null);
 	let locations = $state<ILocationSubmission[]>([]);
-	let mapLoaded = $state(false);
 
 	let activePopup: maplibregl.Popup | null = $state(null);
 
@@ -56,7 +55,6 @@
 					mapInstance.on('load', () => {
 						console.log('Map loaded successfully');
 						isLoading = false;
-						mapLoaded = true;
 
 						addLocationMarkers();
 						addUserMarker();
@@ -126,7 +124,7 @@
 	function addUserMarker() {
 		if (!map || !userLocation) return;
 
-		const marker = new maplibregl.Marker({
+		new maplibregl.Marker({
 			color: '#4A90E2',
 			scale: 1.2
 		})
@@ -137,37 +135,6 @@
 				)
 			)
 			.addTo(map);
-	}
-
-	async function updateDoorCode(locationIndex: number, newDoorCode: string) {
-		try {
-			const location = locations[locationIndex];
-			const response = await fetch(`/api/locations?index=${locationIndex}`, {
-				method: 'PATCH',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					doorCode: newDoorCode.trim() || undefined
-				})
-			});
-
-			if (!response.ok) {
-				const error = await response.json();
-				throw new Error(error.error || 'Failed to update door code');
-			}
-
-			locations[locationIndex] = {
-				...location,
-				properties: {
-					...location.properties,
-					doorCode: newDoorCode.trim() || undefined
-				}
-			};
-		} catch (err) {
-			console.error('Error updating door code:', err);
-			error = err instanceof Error ? err : new Error('Failed to update door code');
-		}
 	}
 </script>
 
