@@ -14,8 +14,8 @@
 	async function getIPLocation() {
 		try {
 			const response = await fetch(
-					`https://api.geoapify.com/v1/ipinfo?apiKey=${import.meta.env.VITE_PUBLIC_GEOAPIFY_API_KEY}`
-				);
+				`https://api.geoapify.com/v1/ipinfo?apiKey=${import.meta.env.VITE_PUBLIC_GEOAPIFY_API_KEY}`
+			);
 			const data = await response.json();
 			return {
 				longitude: data.location.longitude,
@@ -59,7 +59,7 @@
 	// Initial location setup
 	$effect(() => {
 		if (!userLocation) {
-			getIPLocation().then(location => {
+			getIPLocation().then((location) => {
 				userLocation = location;
 			});
 		}

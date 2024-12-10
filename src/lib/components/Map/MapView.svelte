@@ -15,47 +15,45 @@
 	let isLoading = $state(true);
 	let error = $state<Error | null>(null);
 	let locations = $state<ILocationSubmission[]>([]);
+	let isMounted = $state(false);
 
 	let activePopup: maplibregl.Popup | null = $state(null);
 
 	$effect(() => {
-		if (!map) return;
-
-		map.on('click', () => {
-			activePopup?.remove();
-			activePopup = null;
-		});
+		isMounted = true;
+		return () => {
+			isMounted = false;
+			map?.remove();
+		};
 	});
 
 	$effect(() => {
-		if (!container || !userLocation) return;
+		if (!isMounted || !container || !userLocation) return;
 
-		try {
-			const mapInstance = new maplibregl.Map({
-				container,
-				style: `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.VITE_PUBLIC_MAPTILER_API_KEY}`,
-				center: [userLocation.longitude, userLocation.latitude],
-				zoom: 13
-			});
-
-			mapInstance.on('error', (e) => {
-				console.error('Map error:', e);
-				error = new Error(e.error?.message || 'Map error occurred');
-				isLoading = false;
-			});
-
-			map = mapInstance;
-
-			mapInstance.on('load', () => {
-				console.log('Map loaded successfully');
-				isLoading = false;
-
-				// Fetch locations after map is loaded
-				fetchLocations().then(() => {
-					addLocationMarkers();
-					addUserMarker();
+		const initMap = async () => {
+			try {
+				const mapInstance = new maplibregl.Map({
+					container,
+					style: `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.VITE_PUBLIC_MAPTILER_API_KEY}`,
+					center: [userLocation.longitude, userLocation.latitude],
+					zoom: 13
 				});
 
+				mapInstance.on('error', (e) => {
+					console.error('Map error:', e);
+					error = new Error(e.error?.message || 'Map error occurred');
+					isLoading = false;
+				});
+
+				await new Promise((resolve) => {
+					mapInstance.on('load', resolve);
+				});
+
+				map = mapInstance;
+				isLoading = false;
+				console.log('Map loaded successfully');
+
+				// Add controls after map is loaded
 				mapInstance.addControl(new maplibregl.NavigationControl(), 'top-right');
 				mapInstance.addControl(
 					new maplibregl.GeolocateControl({
@@ -67,17 +65,19 @@
 					'top-right'
 				);
 				mapInstance.addControl(new maplibregl.ScaleControl(), 'bottom-left');
-			});
-		} catch (err) {
-			console.error('Error initializing map:', err);
-			error = err instanceof Error ? err : new Error('Failed to initialize map');
-			isLoading = false;
-		}
 
-		return () => {
-			console.log('Cleaning up map...');
-			map?.remove();
+				// Fetch and add markers
+				await fetchLocations();
+				addLocationMarkers();
+				addUserMarker();
+			} catch (err) {
+				console.error('Error initializing map:', err);
+				error = err instanceof Error ? err : new Error('Failed to initialize map');
+				isLoading = false;
+			}
 		};
+
+		initMap();
 	});
 
 	async function fetchLocations() {
