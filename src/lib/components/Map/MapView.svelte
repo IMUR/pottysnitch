@@ -30,58 +30,49 @@
 	$effect(() => {
 		if (!container || !userLocation) return;
 
-		isLoading = true;
+		try {
+			const mapInstance = new maplibregl.Map({
+				container,
+				style: `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.VITE_PUBLIC_MAPTILER_API_KEY}`,
+				center: [userLocation.longitude, userLocation.latitude],
+				zoom: 13
+			});
 
-		fetchLocations()
-			.then(() => {
-				console.log('Locations fetched, initializing map...');
-
-				try {
-					const mapInstance = new maplibregl.Map({
-						container,
-						style: `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.VITE_PUBLIC_MAPTILER_API_KEY}`,
-						center: [userLocation.longitude, userLocation.latitude],
-						zoom: 13
-					});
-
-					mapInstance.on('error', (e) => {
-						console.error('Map error:', e);
-						error = new Error(e.error?.message || 'Map error occurred');
-						isLoading = false;
-					});
-
-					map = mapInstance;
-
-					mapInstance.on('load', () => {
-						console.log('Map loaded successfully');
-						isLoading = false;
-
-						addLocationMarkers();
-						addUserMarker();
-
-						mapInstance.addControl(new maplibregl.NavigationControl(), 'top-right');
-						mapInstance.addControl(
-							new maplibregl.GeolocateControl({
-								positionOptions: {
-									enableHighAccuracy: true
-								},
-								trackUserLocation: true
-							}),
-							'top-right'
-						);
-						mapInstance.addControl(new maplibregl.ScaleControl(), 'bottom-left');
-					});
-				} catch (err) {
-					console.error('Error initializing map:', err);
-					error = err instanceof Error ? err : new Error('Failed to initialize map');
-					isLoading = false;
-				}
-			})
-			.catch((err) => {
-				console.error('Error in map initialization chain:', err);
-				error = err instanceof Error ? err : new Error('Failed to initialize map');
+			mapInstance.on('error', (e) => {
+				console.error('Map error:', e);
+				error = new Error(e.error?.message || 'Map error occurred');
 				isLoading = false;
 			});
+
+			map = mapInstance;
+
+			mapInstance.on('load', () => {
+				console.log('Map loaded successfully');
+				isLoading = false;
+				
+				// Fetch locations after map is loaded
+				fetchLocations().then(() => {
+					addLocationMarkers();
+					addUserMarker();
+				});
+
+				mapInstance.addControl(new maplibregl.NavigationControl(), 'top-right');
+				mapInstance.addControl(
+					new maplibregl.GeolocateControl({
+						positionOptions: {
+							enableHighAccuracy: true
+						},
+						trackUserLocation: true
+					}),
+					'top-right'
+				);
+				mapInstance.addControl(new maplibregl.ScaleControl(), 'bottom-left');
+			});
+		} catch (err) {
+			console.error('Error initializing map:', err);
+			error = err instanceof Error ? err : new Error('Failed to initialize map');
+			isLoading = false;
+		}
 
 		return () => {
 			console.log('Cleaning up map...');
