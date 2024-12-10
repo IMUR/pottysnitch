@@ -117,6 +117,8 @@
 			<div class="rounded-lg bg-white p-2 shadow-lg">
 				<input
 					type="text"
+					id="doorCode"
+					name="doorCode"
 					bind:value={doorCode}
 					placeholder="Door code (optional)"
 					class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
