@@ -10,9 +10,11 @@ export default defineConfig({
 		noExternal: ['maplibre-gl']
 	},
 	define: {
-		'import.meta.env.PUBLIC_MAPTILER_API_KEY': 
-			JSON.stringify(process.env.VITE_PUBLIC_MAPTILER_API_KEY),
-		'import.meta.env.PUBLIC_GEOAPIFY_API_KEY': 
-			JSON.stringify(process.env.VITE_PUBLIC_GEOAPIFY_API_KEY)
+		'import.meta.env.PUBLIC_MAPTILER_API_KEY': JSON.stringify(
+			process.env.VITE_PUBLIC_MAPTILER_API_KEY
+		),
+		'import.meta.env.PUBLIC_GEOAPIFY_API_KEY': JSON.stringify(
+			process.env.VITE_PUBLIC_GEOAPIFY_API_KEY
+		)
 	}
 });

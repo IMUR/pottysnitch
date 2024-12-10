@@ -3,22 +3,22 @@
 @import 'tailwindcss/utilities';
 
 @layer base {
-    html {
-        -webkit-text-size-adjust: 100%;
-    }
+	html {
+		-webkit-text-size-adjust: 100%;
+	}
 
-    html,
-    body {
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-    }
+	html,
+	body {
+		height: 100vh;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+	}
 
-    /* Required for Svelte 5 root rendering */
-    body > div {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
+	/* Required for Svelte 5 root rendering */
+	body > div {
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
 }
