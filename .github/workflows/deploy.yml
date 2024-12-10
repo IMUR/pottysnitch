@@ -1,9 +1,9 @@
 name: Test and Deploy
 on:
   push:
-    branches: [ WIN-LIN ]
+    branches: [WIN-LIN]
   pull_request:
-    branches: [ WIN-LIN ]
+    branches: [WIN-LIN]
 
 jobs:
   test:
@@ -21,6 +21,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Format
+        run: pnpm format
+        
       - name: Type check
         run: pnpm check
         
@@ -29,12 +32,11 @@ jobs:
 
   build:
     needs: test
-    environment: github-pages
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       pages: write
       id-token: write
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
@@ -54,9 +56,6 @@ jobs:
           VITE_PUBLIC_GEOAPIFY_API_KEY: ${{ secrets.VITE_PUBLIC_GEOAPIFY_API_KEY }}
         run: pnpm build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -71,6 +70,9 @@ jobs:
     permissions:
       pages: write
       id-token: write
+    concurrency:
+      group: "pages"
+      cancel-in-progress: false
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
