@@ -12,4 +12,5 @@ body {
 /* Required for Svelte 5 root rendering */
 body > div {
 	height: 100%;
+	display: contents;
 }
