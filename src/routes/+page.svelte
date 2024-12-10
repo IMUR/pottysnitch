@@ -11,24 +11,21 @@
 		latitude: 34.0522
 	};
 
-	async function getIPLocation() {
-		try {
-			const response = await fetch(
-				`https://api.geoapify.com/v1/ipinfo?apiKey=${import.meta.env.VITE_PUBLIC_GEOAPIFY_API_KEY}`
-			);
-			const data = await response.json();
-			return {
-				longitude: data.location.longitude,
-				latitude: data.location.latitude
-			};
-		} catch (err) {
-			console.warn('IP location failed:', err);
-			return defaultLocation;
-		}
-	}
+	console.log('Page script initializing...');
+
+	// Set initial location to default
+	userLocation = defaultLocation;
+
+	// Check for browser environment
+	$effect(() => {
+		console.log('Checking browser environment...');
+		isBrowser = typeof window !== 'undefined';
+		console.log('isBrowser:', isBrowser);
+	});
 
 	async function requestLocation() {
-		if (isLocating || userLocation) return;
+		console.log('Location request initiated');
+		if (isLocating || !isBrowser) return;
 		isLocating = true;
 
 		try {
@@ -43,35 +40,21 @@
 				longitude: position.coords.longitude,
 				latitude: position.coords.latitude
 			};
+			console.log('Location updated:', userLocation);
 		} catch (error) {
-			console.warn('Browser geolocation failed, using IP location');
-			userLocation = await getIPLocation();
+			console.warn('Geolocation failed:', error);
 		} finally {
 			isLocating = false;
 		}
 	}
-
-	// Check for browser environment
-	$effect(() => {
-		isBrowser = typeof window !== 'undefined';
-	});
-
-	// Initial location setup
-	$effect(() => {
-		if (!userLocation) {
-			getIPLocation().then((location) => {
-				userLocation = location;
-			});
-		}
-	});
 </script>
 
-<div class="relative h-full">
+<div class="relative h-screen w-full">
 	<MapView {userLocation} />
 	<div class="absolute left-1/2 top-4 z-10 -translate-x-1/2">
 		<LocationSearch {userLocation} />
 	</div>
-	{#if isBrowser && !isLocating && typeof navigator !== 'undefined' && navigator.geolocation}
+	{#if isBrowser && !isLocating}
 		<button
 			class="absolute bottom-4 right-4 z-10 rounded-lg bg-white px-4 py-2 shadow-lg hover:bg-gray-100"
 			onclick={requestLocation}
