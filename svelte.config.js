@@ -6,7 +6,10 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter(),
+		adapter: adapter({
+			fallback: '404.html',
+			strict: false
+		}),
 		paths: {
 			base: process.env.NODE_ENV === 'production' ? '/pottysnitch' : ''
 		},
