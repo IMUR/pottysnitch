@@ -13,7 +13,10 @@ const config = {
 		paths: {
 			base: process.env.NODE_ENV === 'production' ? '/pottysnitch' : ''
 		},
-		appDir: 'app'
+		appDir: 'app',
+		prerender: {
+			handleMissingId: 'ignore'
+		}
 	}
 };
 

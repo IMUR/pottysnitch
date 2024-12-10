@@ -4,6 +4,8 @@ import { writeFile, mkdir, readFile } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import type { ILocationSubmission } from '$lib/types/location';
 
+export const prerender = true;
+
 export const GET: RequestHandler = async () => {
 	try {
 		const dataPath = join(process.cwd(), 'data', 'locations.json');
